@@ -1,0 +1,30 @@
+<%- include("partials/header.ejs") %>
+
+<% let dt = new Date(); %>
+<h1><%= dt.toLocaleString('default', { weekday: 'long' }) %>, 
+    <%= dt.toLocaleString('default', { month: 'long' }) %> 
+    <%= dt.getFullYear() % 100 %>
+</h1>
+
+<form class="input-form" action="/" method="POST">
+    <input type="text" name="text" placeholder="New Task" required/>
+    <input type="submit" value="ADD"/>
+</form>
+
+<% if (locals.items && (locals.items.length > 0)) { %>
+    <ul class="tasks-list">
+        <% items.forEach(item => { %>
+            <form action="/" method="POST">
+                <li <% if (item.done) { %> class="done-task" <% } %> >
+                    <input type="text" name="taskId" value=<%= item.id %> class="hide-input"/>
+                    <input type="checkbox" name="isDone" value=<% if (item.done) { %> true <% } else { %> false <% } %> onChange="this.form.submit()"/>
+                    <p><%= item.text %></p>
+                </li>
+            </form>
+        <% }); %>
+    </ul>
+<% } else { %>
+    <p>List is empty.</p>
+<% } %>
+
+<%- include("partials/footer.ejs") %>
